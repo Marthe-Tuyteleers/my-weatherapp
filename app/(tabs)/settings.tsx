@@ -29,7 +29,7 @@ export default function SettingsScreen() {
   
   return (
     <SafeAreaView style={styles.container}>
-      <ThemedText>Settings</ThemedText>
+      <ThemedText>Profile</ThemedText>
       <TextInput value={username} onChangeText={setUsername} />
       <Button title="Save" onPress={() => trigger({username})} />
     </SafeAreaView>

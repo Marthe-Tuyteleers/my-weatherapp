@@ -25,10 +25,14 @@ export default function LoginScreen() {
 
    const handleGoogleLogin = async () => {
     try {
-        const authUrl = `${API_URL}/auth/google`;
-        const redirectUrl = AuthSession.makeRedirectUri();
-
-        const result =  await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
+      const redirectUrl = AuthSession.makeRedirectUri();
+      const authUrl = `${API_URL}/auth/google?redirectUri=${redirectUrl}`;
+      console.log(redirectUrl);
+      console.log(authUrl);
+      //i have to do this because of a stupid bug in the expo web browser
+      // it's not sending the URI correctly
+      const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
+      
 
         if (result.type === 'success' && result.url) {
             // Handle the redirect URL
@@ -58,7 +62,7 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => handleGoogleLogin()}>
-           <ThemedText type="title">LOGIN WITH GOOGLE</ThemedText>     
+           <ThemedText type="title">Login with Googke</ThemedText>     
         </TouchableOpacity>   
       </View>
     </SafeAreaView>
