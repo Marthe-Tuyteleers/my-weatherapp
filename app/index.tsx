@@ -62,7 +62,7 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => handleGoogleLogin()}>
-           <ThemedText type="title">Login with Googke</ThemedText>     
+           <ThemedText type="title">Login with Google</ThemedText>     
         </TouchableOpacity>   
       </View>
     </SafeAreaView>

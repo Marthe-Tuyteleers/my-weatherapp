@@ -23,11 +23,37 @@ export default function TabLayout() {
   }
 
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'red'}}>
-      <Tabs.Screen name="(home)" initialParams={{ userId }} options={{ headerShown: false, title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
-        }} />
-      <Tabs.Screen name="settings" initialParams={{ userId }} options={{ headerShown: false, tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color}/> }}  />
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: '#FFA900', // Kleur van actieve tab
+        tabBarInactiveTintColor: '#FFD88B',
+        tabBarStyle: { 
+          backgroundColor: '#ffffff', // Achtergrondkleur van de tabbar
+ },
+      }}
+    >
+      <Tabs.Screen
+        name="(home)"
+        initialParams={{ userId }}
+        options={{
+          headerShown: false,
+          title: 'HOME',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="home" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        initialParams={{ userId }}
+        options={{
+          title: 'USER',
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="user" color={color} />
+          ),
+        }}
+      />
     </Tabs>
-  );
-}
+    );
+  }
