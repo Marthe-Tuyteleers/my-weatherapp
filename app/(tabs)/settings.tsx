@@ -23,6 +23,8 @@ export default function SettingsScreen() {
 
   useEffect(() => {
     if (data) {
+      setGenderPreference(data.genderPreference);
+      setProfilePicture(data.profilePicture);
       setUsername(data.username);
     }
   }, [data]);
@@ -41,21 +43,21 @@ export default function SettingsScreen() {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
-          <ThemedText>loading user</ThemedText>
+          <ThemedText>Loading user</ThemedText>
         </View>
       </SafeAreaView>
     );
   }
 
-   if (isErrorPut) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-          <ThemedText>Error loading data</ThemedText>
-        </View>
-      </SafeAreaView>
-    );
-  }
+  //  if (isErrorPut) {
+  //   return (
+  //     <SafeAreaView style={styles.safeArea}>
+  //       <View style={styles.container}>
+  //         <ThemedText>Error loading data</ThemedText>
+  //       </View>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
