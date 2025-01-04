@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/ThemedText';
 export default function SettingsScreen() {
   const params = useLocalSearchParams();
   const { data, isLoading, isError } = useUserGet(params.userId);
-  const { trigger, isMutating } = useUserPut(params.userId);
+  const { trigger, isMutating, isError: isErrorPut } = useUserPut(params.userId);
   const [username, setUsername] = useState('');
   const [genderPreference, setGenderPreference] = useState('male'); // Default to 'male'
   const [profilePicture, setProfilePicture] = useState(null); // Slaat de geselecteerde profielfoto op
@@ -27,11 +27,31 @@ export default function SettingsScreen() {
     }
   }, [data]);
 
-  if (isMutating || isLoading || !data) {
+  if (isMutating) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
-          <ThemedText>Loading...</ThemedText>
+          <ThemedText>Currently updating</ThemedText>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (isLoading || !data) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <ThemedText>loading user</ThemedText>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+   if (isErrorPut) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <ThemedText>Error loading data</ThemedText>
         </View>
       </SafeAreaView>
     );
@@ -99,7 +119,7 @@ export default function SettingsScreen() {
       {/* De knop als TouchableOpacity */}
       <TouchableOpacity
         style={styles.button} 
-        onPress={() => trigger({ username, genderPreference, profilePicture })}
+        onPress={() => trigger({ username:"", genderPreference, profilePicture })}
       >
         <Text style={styles.buttonText}>Confirm</Text>
       </TouchableOpacity>
