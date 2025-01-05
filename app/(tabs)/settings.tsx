@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import useUserGet from '@/data/user-get';
 import useUserPut from '@/data/user-put';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen() {
   const params = useLocalSearchParams();
@@ -125,6 +126,15 @@ export default function SettingsScreen() {
       >
         <Text style={styles.buttonText}>Confirm</Text>
       </TouchableOpacity>
+
+        <TouchableOpacity
+        style={styles.button}
+        onPress={async() => {await AsyncStorage.removeItem('userId');
+          router.replace("/reset"); }}
+      >
+        <Text style={styles.buttonText}>Log out</Text>
+    </TouchableOpacity>
+
     </SafeAreaView>
   );
 }

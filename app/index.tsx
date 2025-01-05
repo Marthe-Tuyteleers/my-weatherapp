@@ -1,7 +1,5 @@
-import { View, Alert, SafeAreaView, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Alert, SafeAreaView, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import useMessages from '@/data/messages';
 import { useEffect } from 'react';
 import {API_URL} from '@/constants/Api'
 import * as WebBrowser from 'expo-web-browser';
@@ -10,60 +8,53 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
 export default function LoginScreen() {
-   const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        const checkLogin = async () => {
-            const userId = await AsyncStorage.getItem('userId');
-            if (userId) {
-                router.replace('/(tabs)');
-            }
-        };
-    
-        checkLogin();
-    }, []);
+  useEffect(() => {
+    const checkLogin = async () => {
+      const userId = await AsyncStorage.getItem('userId');
+      if (userId) {
+        router.replace('/(tabs)');
+      }
+    };
+  
+    checkLogin();
+  }, []);
 
-   const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async () => {
     try {
       const redirectUrl = AuthSession.makeRedirectUri();
       const authUrl = `${API_URL}/auth/google?redirectUri=${redirectUrl}`;
       console.log(redirectUrl);
       console.log(authUrl);
-      //i have to do this because of a stupid bug in the expo web browser
-      // it's not sending the URI correctly
       const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
-      
 
-        if (result.type === 'success' && result.url) {
-            // Handle the redirect URL
-            const params = new URL(result.url).searchParams;
-
-            // Extract user ID or other parameters (e.g., tokens, profile data)
-            const user = params.get('user'); // Replace with the correct parameter from your server's redirect URL
-            if (user) {
-                // Store the user ID
-                await AsyncStorage.setItem('userId', user);
-
-                // Navigate to tabs after successful login
-                router.replace('/(tabs)');
-            }
-        } else {
-            Alert.alert('Authentication canceled or failed');
+      if (result.type === 'success' && result.url) {
+        const params = new URL(result.url).searchParams;
+        const user = params.get('user');
+        if (user) {
+          await AsyncStorage.setItem('userId', user);
+          router.replace('/(tabs)');
         }
-
+      } else {
+        Alert.alert('Authentication canceled or failed');
+      }
     } catch (error) {
-        console.log(error);
-        Alert.alert('Error', 'Failed to authenticate with Google');
+      console.log(error);
+      Alert.alert('Error', 'Failed to authenticate with Google');
     }
-}
-
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
+        <Image
+          source={require('@/assets/images/Cloudy.png')} // Path to your image
+          style={styles.image}
+        />
         <TouchableOpacity onPress={() => handleGoogleLogin()}>
-           <ThemedText type="title">Login with Google</ThemedText>     
-        </TouchableOpacity>   
+          <ThemedText style={styles.titleText}>Login with Google</ThemedText>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -71,12 +62,28 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor:"#ccc",
+    backgroundColor:"#F4C3C2",
     flex: 1
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  titleText: {
+    color: '#F4C3C2', // Change color as needed
+    fontSize: 24,
+    fontWeight: 'bold',
+    padding: 20,
+    backgroundColor: '#FFF7F2',
+    borderRadius: 40,
+  },
+  image: {
+    position: 'absolute',
+    width: '90%',
+    height: '90%',
+    bottom: 60,
+    left: 20,
+    resizeMode: 'contain',
   },
 });
